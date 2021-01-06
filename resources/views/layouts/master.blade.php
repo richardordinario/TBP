@@ -11,7 +11,6 @@
 </head>
 <body>
     <div id="app">
-        {{-- @yield('content') --}}
         <main-app/>
     </div>
     <script>

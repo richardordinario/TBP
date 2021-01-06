@@ -10,6 +10,7 @@ window.Vue = require('vue');
 
 import Vuetify from '../plugins/vuetify';
 import router from './router'
+import store from './store'
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -34,5 +35,6 @@ Vue.component('main-app', require('./App.vue').default);
 const app = new Vue({
     vuetify: Vuetify,
     router,
+    store,
     el: '#app',
 });

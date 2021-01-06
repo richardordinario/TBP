@@ -2,11 +2,13 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
-import Home from '../components/landing/Home.vue'
+import Index from '../components/landing/Index.vue'
+import Maps from '../components/landing/Map.vue'
 
 
 const routes = [
-    { path: '/home', component: Home, name: 'Home' },
+    { path: '/', component: Index, name: 'Index' },
+    { path: '/map', component: Maps, name: 'Map' },
 ]
 
 const router = new VueRouter({
