@@ -32,7 +32,7 @@
                                     class=""
                                     elevation="0"
                                     max-width="500"
-                                    v-if="selectedRegion"
+                                    v-if="selected"
                                     >
                                         <v-card-title class="pa-3">
                                             <v-icon color="white" class="p-2">mdi-terrain</v-icon>
@@ -46,8 +46,8 @@
                                             white--text
                                             font-weight-light
                                             text-title 
-                                            ">ILOCUS REGION</div>
-                                            <p class="white--text mt-2 text-subtitle-1">REGION 1</p>
+                                            ">{{selected.title}}</div>
+                                            <p class="white--text mt-2 text-subtitle-1">REGION {{selected.region}}</p>
                                             <div class="white--text text-subtitle-1">
                                                 Travel back in time and discover culture and heritage while sidetripping the white sand beaches.
                                             </div>
@@ -161,11 +161,12 @@
             }
         },
         mounted() {
-            
+
         },
         computed: {
             ...mapState('maps',[
-                'regions'
+                'regions',
+                'selected'
             ])
         },
         methods: {
@@ -203,6 +204,8 @@
             },
             regionBtn(id) {
                 // const target = e.target
+                this.$store.dispatch('maps/searchRegion',id)
+                this.mapImg = this.selected.map
                 this.selectedRegion = ['asdadsasd']                
             }
         },

@@ -2377,7 +2377,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   mounted: function mounted() {},
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])('maps', ['regions'])),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])('maps', ['regions', 'selected'])),
   methods: {
     ilocusDrop: function ilocusDrop(e) {
       this.dragSet = true;
@@ -2410,6 +2410,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     regionBtn: function regionBtn(id) {
       // const target = e.target
+      this.$store.dispatch('maps/searchRegion', id);
+      this.mapImg = this.selected.map;
       this.selectedRegion = ['asdadsasd'];
     }
   }
@@ -41206,7 +41208,7 @@ var render = function() {
                                   1
                                 ),
                                 _vm._v(" "),
-                                _vm.selectedRegion
+                                _vm.selected
                                   ? _c(
                                       "v-card",
                                       {
@@ -41271,7 +41273,7 @@ var render = function() {
                                               staticClass:
                                                 "\n                                        text-h5 \n                                        white--text\n                                        font-weight-light\n                                        text-title \n                                        "
                                             },
-                                            [_vm._v("ILOCUS REGION")]
+                                            [_vm._v(_vm._s(_vm.selected.title))]
                                           ),
                                           _vm._v(" "),
                                           _c(
@@ -41280,7 +41282,12 @@ var render = function() {
                                               staticClass:
                                                 "white--text mt-2 text-subtitle-1"
                                             },
-                                            [_vm._v("REGION 1")]
+                                            [
+                                              _vm._v(
+                                                "REGION " +
+                                                  _vm._s(_vm.selected.region)
+                                              )
+                                            ]
                                           ),
                                           _vm._v(" "),
                                           _c(
@@ -102399,11 +102406,31 @@ var state = {
     map: ASSET + '/ilocus-colored-map.png',
     title: 'CAGAYAN VALLEY',
     region: '2'
-  }]
+  }],
+  selected: []
 };
-var getters = {};
-var actions = {};
-var mutations = {};
+var getters = {
+  getRegion: function getRegion(state) {
+    return state.regions;
+  }
+};
+var actions = {
+  searchRegion: function searchRegion(_ref, payload) {
+    var commit = _ref.commit,
+        getters = _ref.getters;
+
+    for (var index = 0; index < getters['getRegion'].length; index++) {
+      if (getters['getRegion'][index].region === payload) {
+        commit('SET_REGION', getters['getRegion'][index]);
+      }
+    }
+  }
+};
+var mutations = {
+  SET_REGION: function SET_REGION(state, payload) {
+    return state.selected = payload;
+  }
+};
 /* harmony default export */ __webpack_exports__["default"] = ({
   namespaced: true,
   state: state,
