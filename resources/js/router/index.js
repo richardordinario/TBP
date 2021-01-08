@@ -2,15 +2,18 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
-import Index from '../components/landing/Index.vue'
-import Maps from '../components/landing/Map.vue'
+import Index from '../components/views/landing/Index.vue'
+import Maps from '../components/views/landing/Map.vue'
 import Sample from '../components/ExampleComponent.vue'
+// import Region from '../components/landing/Region.vue'
+import Region from '../components/views/region/Main.vue'
 
 
 const routes = [
     { path: '/', component: Index, name: 'Index' },
     { path: '/map', component: Maps, name: 'Map' },
     { path: '/sample', component: Sample, name: 'Sample' },
+    { path: '/region', component: Region, name: 'Region' },
 ]
 
 const router = new VueRouter({
