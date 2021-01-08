@@ -7,6 +7,7 @@ import Maps from '../components/views/landing/Map.vue'
 import Sample from '../components/ExampleComponent.vue'
 // import Region from '../components/landing/Region.vue'
 import Region from '../components/views/region/Main.vue'
+import StartScreen from '../components/views/quiz/StartScreen.vue'
 
 
 const routes = [
@@ -14,6 +15,7 @@ const routes = [
     { path: '/map', component: Maps, name: 'Map' },
     { path: '/sample', component: Sample, name: 'Sample' },
     { path: '/region', component: Region, name: 'Region' },
+    { path: '/quiz', component: StartScreen, name: 'Quiz' },
 ]
 
 const router = new VueRouter({

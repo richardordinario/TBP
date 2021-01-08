@@ -69,17 +69,19 @@
         >
             <v-icon large color="red">mdi-information-variant</v-icon>
         </v-btn>
+        <router-link to="/quiz">
+            <v-btn
+            fab
+            absolute
+            bottom
+            right
+            :small="$vuetify.breakpoint.smAndDown"
+            style="margin-bottom: 40px; margin-right: 20px"
+            >
+                <v-img :src="bulbImg" height="50px" width="50px" :class="{'iconSm': $vuetify.breakpoint.smAndDown}"></v-img>
+            </v-btn>
+        </router-link>
 
-        <v-btn
-        fab
-        absolute
-        bottom
-        right
-        :small="$vuetify.breakpoint.smAndDown"
-        style="margin-bottom: 40px; margin-right: 20px"
-        >
-            <v-img :src="bulbImg" height="50px" width="50px" :class="{'iconSm': $vuetify.breakpoint.smAndDown}"></v-img>
-        </v-btn>
     </v-img>
 </template>
 
