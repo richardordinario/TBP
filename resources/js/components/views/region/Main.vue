@@ -42,7 +42,8 @@
             }
         },
         mounted() {
-
+            localStorage.setItem('username', '')
+            this.$store.commit('main/SET_USERNAME', '')
         },
         methods: {
             getSelected(id) {

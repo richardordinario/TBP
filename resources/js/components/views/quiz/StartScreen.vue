@@ -14,81 +14,23 @@
                     {{region.title}}
                     </v-btn>
                 </router-link>
+                <v-spacer></v-spacer>
+                <p v-if="username" class="white--text ma-5 text-subtitle-1">Score: 0 pts.</p>
             </v-app-bar>
             <v-main>
-                <v-container fill-height>
-                    <v-row align="center" justify="center">
-                        <v-col lg="6" md="8" sm="12">
-                            <v-card
-                            elevation="0"
-                            color="transparent">
-                                <center class="my-5">
-                                    <v-img :src="logo"
-                                    max-height="200px"
-                                    max-width="200px"
-                                    ></v-img>
-                                </center>
-                            <v-card-text>
-                                <div class="
-                                text-lg-h4
-                                text-md-h4
-                                text-h5
-                                mt-5
-                                text-center
-                                font-weight-thin
-                                white--text
-                                subtitle"
-                                >
-                                    WELCOME TO TRIVIA QUIZ!
-                                </div>
-                                <div class="col-md-7 mx-auto">
-                                    <v-divider
-                                    color="white"
-                                    ></v-divider>
-                                </div>
-
-                                <div
-                                class="
-                                text-lg-h3
-                                text-md-h3
-                                text-h4
-                                text-center
-                                white--text
-                                text-title
-                                mb-5
-                                ">
-                                    {{region.title}}
-                                </div>
-                                <div class="col-md-7 mx-auto mb-0 pb-0" style="margin-top: 50px">
-                                    <v-form ref="form">
-                                        <v-text-field
-                                        solo
-                                        v-model="username"
-                                        :rules="[() => !!username || 'This field is required!']"
-                                        :error-messages="errMsg"
-                                        required
-                                        label="Type youre name here.."></v-text-field>
-                                    </v-form>
-
-                                </div>
-                                <div class="col-md-6 mx-auto mt-0 pt-0">
-                                    <v-btn
-                                    block
-                                    x-large
-                                    color="warning"
-                                    required
-                                    :loading="isLoading"
-                                    @click="startQuiz"
-                                    >START QUIZ</v-btn>
-                                </div>
-
-                            </v-card-text>
-                            </v-card>
-                        </v-col>
-                    </v-row>
-                </v-container>
-
+                <RegisterUser v-if="!username" :region="region" :uuid="region.uuid"/>
+                <QuizPanel v-else :quiz="quiz" :selection="selection" :uuid="region.uuid"/>
             </v-main>
+            <v-btn
+            bottom
+            absolute
+            x-large
+            v-if="username"
+            :style="{left: '50%', transform:'translateX(-50%)', background: 'rgba(0,0,0,0.5)'}"
+            class="text-center white--text text-body-2 pa-5"
+            >Drag and drop each attactions to their respective city.
+            </v-btn>
+
             <router-link to="/map">
                 <v-btn
                 fab
@@ -97,11 +39,12 @@
                 right
                 outlined
                 color="white"
+                class="pa-2"
                 style="margin-bottom: 50px;
                 background-color: rgba(0,0,0,0.5)
                 margin-right: 30px"
                 >
-                <img :src="mini_map" alt="map" class="img-fluid">
+                <img :src="mini_map" alt="map" class="img-fluid p-5">
                 </v-btn>
             </router-link>
         </section>
@@ -109,12 +52,18 @@
 </template>
 
 <script>
+    import RegisterUser from './RegisterUser.vue'
+    import QuizPanel from './QuizPanel.vue'
+
     export default {
+        components: {
+            RegisterUser,
+            QuizPanel
+        },
         data() {
             return {
                 logo: ASSET + '/startLogo.svg',
                 mini_map: ASSET + '/mini-map.png',
-                username: null,
                 errMsg: '',
                 frmHasErr: false,
                 isLoading: false
@@ -124,15 +73,29 @@
             region: function() {
                 this.$store.dispatch('maps/searchRegion',this.$route.params.uuid)
                 return this.$store.getters['maps/getSelected']
+            },
+            username: function() {
+                return this.$store.getters['main/getUsername']
+            },
+            quiz: function() {
+                this.$store.dispatch('maps/searchQuiz',this.$route.params.uuid)
+                return this.$store.getters['maps/getQuiz']
+            },
+            selection: function() {
+                this.$store.dispatch('maps/getChoices', this.quiz.quuid)
+                return this.$store.getters['maps/getSelection']
             }
+        },
+        mounted() {
+
         },
         methods: {
             startQuiz() {
                 this.isLoading = true
+                console.log(this.$refs.form.validate('username'))
                 setTimeout(() => {
                     this.isLoading = false
-                    this.$refs.form.validate('username')
-                    this.$router.push('/quiz/'+this.region.uuid+'/'+this.region.uuid)
+                    this.$refs.form.validate('username') ? this.$router.push('/quiz/'+this.region.uuid+'/'+this.region.uuid) : ''
 
                 }, 2000);
                 console.log(this.username)
@@ -155,9 +118,6 @@
 }
 .subtitle {
     font-family: Montserrat !important;
-}
-.main {
-
 }
 #inspire {
     background-image: url('/img/bgStart.png');
