@@ -4,7 +4,7 @@
         :class="{'sm-drawer': $vuetify.breakpoint.xs}"
         width="500px"
         v-model="drawer">
-        <SideNav/>
+        <SideNav :region="region"/>
         </v-navigation-drawer>
         <v-main>
             <v-btn
@@ -13,7 +13,7 @@
             elevation="0"
             absolute
             class="close-drawer white--text"
-             @click.stop="drawer = !drawer"
+            @click.stop="drawer = !drawer"
             >
             <v-icon class="pl-2" v-if="drawer">mdi-chevron-left</v-icon>
             <v-icon class="pl-2" v-else>mdi-chevron-right</v-icon>
@@ -35,8 +35,20 @@
                 drawer: null,
             }
         },
-        methods: {
+        computed: {
+            region: function() {
+                this.$store.dispatch('maps/searchRegion',this.$route.params.uuid)
+                return this.$store.getters['maps/getSelected']
+            }
+        },
+        mounted() {
 
+        },
+        methods: {
+            getSelected(id) {
+                this.$store.dispatch('maps/searchRegion',id)
+                this.region = this.$store.getters['maps/getSelected']
+            }
         }
     }
 </script>

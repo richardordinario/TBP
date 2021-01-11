@@ -30,7 +30,7 @@
                 <v-icon color="white" large class="p-2">mdi-bank</v-icon>
                 <v-icon color="white" large class="p-2">mdi-beach</v-icon>
             </v-card-title>
-            <v-card-subtitle class="white--text text-subtitle-1">REGION 1</v-card-subtitle>
+            <v-card-subtitle class="white--text text-subtitle-1">REGION {{region.region}}</v-card-subtitle>
             <v-card-text>
                 <div
                 class="
@@ -41,7 +41,7 @@
                 text-h4
                 "
                 style="margin-bottom: 50px"
-                >ILOCUS REGION</div>
+                >{{region.title}}</div>
                 <div class="row justify-content-center my-5">
                     <div class=" col-md-6 col-sm-12 cols-12">
                         <img :src="mapImg" style="" class="img-fluid"  :class="{'imgSm': $vuetify.breakpoint.smAndDown}"/>
@@ -69,7 +69,7 @@
         >
             <v-icon large color="red">mdi-information-variant</v-icon>
         </v-btn>
-        <router-link to="/quiz">
+        <router-link :to="'/quiz/'+ region.uuid">
             <v-btn
             fab
             absolute
@@ -81,7 +81,6 @@
                 <v-img :src="bulbImg" height="50px" width="50px" :class="{'iconSm': $vuetify.breakpoint.smAndDown}"></v-img>
             </v-btn>
         </router-link>
-
     </v-img>
 </template>
 
@@ -89,6 +88,7 @@
 
     export default {
         props: {
+            region: Object,
             drawer: Boolean
         },
         data() {
@@ -102,7 +102,7 @@
 
         },
         mounted() {
-
+            console.log(this.region)
         }
     }
 </script>

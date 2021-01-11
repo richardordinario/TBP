@@ -5,13 +5,15 @@
             color="transparent"
             elevation="0"
             >
-                <v-btn
-                class="white--text"
-                text
-                >
-                <v-icon left>mdi-arrow-left</v-icon>
-                Ilocus Region
-                </v-btn>
+                <router-link :to="'/region/'+ region.uuid">
+                    <v-btn
+                    class="white--text"
+                    text
+                    >
+                    <v-icon left>mdi-arrow-left</v-icon>
+                    {{region.title}}
+                    </v-btn>
+                </router-link>
             </v-app-bar>
             <v-main>
                 <v-container fill-height>
@@ -39,7 +41,7 @@
                                 >
                                     WELCOME TO TRIVIA QUIZ!
                                 </div>
-                                <div class="col-md-8 mx-auto">
+                                <div class="col-md-7 mx-auto">
                                     <v-divider
                                     color="white"
                                     ></v-divider>
@@ -53,15 +55,31 @@
                                 text-center
                                 white--text
                                 text-title
+                                mb-5
                                 ">
-                                    ILOCUS REGION
+                                    {{region.title}}
                                 </div>
-                                <div class="col-md-6 mx-auto">
-                                    <v-text-field
-                                    outlined
-                                    color="white"
-                                    filled
-                                    label="Type youre name here.."></v-text-field>
+                                <div class="col-md-7 mx-auto mb-0 pb-0" style="margin-top: 50px">
+                                    <v-form ref="form">
+                                        <v-text-field
+                                        solo
+                                        v-model="username"
+                                        :rules="[() => !!username || 'This field is required!']"
+                                        :error-messages="errMsg"
+                                        required
+                                        label="Type youre name here.."></v-text-field>
+                                    </v-form>
+
+                                </div>
+                                <div class="col-md-6 mx-auto mt-0 pt-0">
+                                    <v-btn
+                                    block
+                                    x-large
+                                    color="warning"
+                                    required
+                                    :loading="isLoading"
+                                    @click="startQuiz"
+                                    >START QUIZ</v-btn>
                                 </div>
 
                             </v-card-text>
@@ -69,9 +87,23 @@
                         </v-col>
                     </v-row>
                 </v-container>
-                <v-btn
-                ></v-btn>
+
             </v-main>
+            <router-link to="/map">
+                <v-btn
+                fab
+                absolute
+                bottom
+                right
+                outlined
+                color="white"
+                style="margin-bottom: 50px;
+                background-color: rgba(0,0,0,0.5)
+                margin-right: 30px"
+                >
+                <img :src="mini_map" alt="map" class="img-fluid">
+                </v-btn>
+            </router-link>
         </section>
     </v-app>
 </template>
@@ -80,7 +112,30 @@
     export default {
         data() {
             return {
-                logo: ASSET + '/startLogo.svg'
+                logo: ASSET + '/startLogo.svg',
+                mini_map: ASSET + '/mini-map.png',
+                username: null,
+                errMsg: '',
+                frmHasErr: false,
+                isLoading: false
+            }
+        },
+        computed: {
+            region: function() {
+                this.$store.dispatch('maps/searchRegion',this.$route.params.uuid)
+                return this.$store.getters['maps/getSelected']
+            }
+        },
+        methods: {
+            startQuiz() {
+                this.isLoading = true
+                setTimeout(() => {
+                    this.isLoading = false
+                    this.$refs.form.validate('username')
+                    this.$router.push('/quiz/'+this.region.uuid+'/'+this.region.uuid)
+
+                }, 2000);
+                console.log(this.username)
             }
         }
     }
@@ -91,6 +146,9 @@
 @font-face {
     font-family: "Barabara";
     src: url('/fonts/barabara.ttf');
+}
+* {
+    font-family: Montserrat !important;
 }
 .text-title {
     font-family: Barabara !important;

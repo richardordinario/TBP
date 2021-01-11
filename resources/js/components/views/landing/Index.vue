@@ -17,11 +17,11 @@
                  <v-container
                       fill-height
                       fluid
-                      pa-0 ma-0 pb-3 
+                      pa-0 ma-0 pb-3
                     >
                     <v-layout fill-height align-end pb-4 mb-4>
                         <v-flex xs12>
-                            <v-card 
+                            <v-card
                             color="transparent"
                             elevation="0"
                             class="pa-5">
@@ -30,8 +30,6 @@
                         </v-flex>
                     </v-layout>
                 </v-container>
-                <!-- <v-img :src="item.src" style="width:100%;height:100%;"></v-img> -->
-               
             </v-carousel-item>
         </v-carousel>
         <div class="my-overlay">
@@ -118,6 +116,9 @@
                     { src: ASSET + '/lbg2.png', title: 'Banaue, Rice Terraces'  },
                 ]
             }
+        },
+        mounted() {
+            localStorage.setItem('region', '')
         }
     }
 </script>

@@ -2,7 +2,74 @@
     <v-app id="inspire">
         <section class="banner" >
             <div class="overlay">
-                <v-container fluid fill-height >
+                <div class="container">
+                    <div class="row justify-content-center" :class="{'rowMargin': $vuetify.breakpoint.smAndDown}">
+                        <div class="col-xl-8 col-lg-10 col-md-12 col-sm-12">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="header-title" :class="{'headerPadding': !$vuetify.breakpoint.sm}">
+                                        <v-img :src="tbpIcon"
+                                        max-width="80px"
+                                        max-height="80px"
+                                        class="ml-3"
+                                        ></v-img>
+                                        <div class="ml-5">
+                                            <p class="
+                                            text-xl-h3
+                                            text-lg-h4
+                                            text-md-h4
+                                            text-sm-h5
+                                            text-h4
+                                            text-title
+                                            white--text
+                                            mt-5">VIRTUAL TOUR</p>
+                                            <p class="
+                                            white--text pa-2
+                                            text-body-1">Click the<span icon> <v-icon color="warning">mdi-map-marker</v-icon> </span> icon to discover the wonders of region</p>
+                                        </div>
+                                    </div>
+                                    <v-card
+                                    style="
+                                    background-color:  rgba(0,0,0,0.3);
+                                    border-radius: 12px;
+                                    margin-top: 50px"
+                                    class=""
+                                    elevation="0"
+                                    max-width="500"
+                                    v-if="selectedRegion"
+                                    >
+                                        <v-card-title class="pa-3">
+                                            <v-icon color="white" class="p-2">mdi-terrain</v-icon>
+                                            <v-icon color="white" class="p-2">mdi-bike</v-icon>
+                                            <v-icon color="white" class="p-2">mdi-bank</v-icon>
+                                            <v-icon color="white" class="p-2">mdi-beach</v-icon>
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <router-link :to="'/region/'+selected.uuid">
+                                            <div class="
+                                            text-h5
+                                            white--text
+                                            font-weight-light
+                                            text-title
+                                            ">{{selected.title}}</div>
+
+                                            </router-link>
+
+                                            <p class="white--text mt-2 text-subtitle-1">REGION {{selected.region}}</p>
+                                            <div class="white--text text-subtitle-1">
+                                                Travel back in time and discover culture and heritage while sidetripping the white sand beaches.
+                                            </div>
+                                        </v-card-text>
+                                    </v-card>
+                                </div>
+                                <div class="col-md-6">
+                                    <img :src="mapImg" alt="" class="img-fluid">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <v-container fluid fill-height >
                     <v-row align="center" justify="center">
                         <v-col lg="8" md="8" sm="10">
                             <v-layout row wrap>
@@ -21,7 +88,7 @@
                                             text-title
                                             white--text
                                             mt-5">VIRTUAL TOUR</p>
-                                            <p class="subtitle-1 white--text pa-2 text-md-subtitle-2">Click the<span icon> <v-icon color="warning">mdi-map-marker</v-icon> </span> icon to discover the wonders of region</p>
+                                            <p class="text-lg-subtitle-1 white--text pa-2 text-md-subtitle-2">Click the<span icon> <v-icon color="warning">mdi-map-marker</v-icon> </span> icon to discover the wonders of region</p>
                                         </div>
                                     </div>
                                     <v-card
@@ -79,8 +146,7 @@
                             </v-layout>
                         </v-col>
                     </v-row>
-
-                </v-container>
+                </v-container> -->
             </div>
             <v-speed-dial
                 style="position:absolute;"
@@ -94,8 +160,9 @@
                     v-model="fab"
                     color="white"
                     @click="onMap"
-                    v-click-outside="onMap"
+                    v-click-outside="offMap"
                     fab
+                    large
                     >
                     <v-icon v-if="fab">
                         mdi-close
@@ -114,7 +181,7 @@
                         small
                         color="transparent"
                         style="margin-right: 100px;"
-                        @click="regionBtn(region.region)"
+                        @click="regionBtn(region.uuid)"
                     >
                         <v-icon left>mdi-map-marker</v-icon>
                         {{region.title}}
@@ -142,7 +209,8 @@
             }
         },
         mounted() {
-
+            console.log(localStorage.getItem('region'))
+            localStorage.getItem('region') ? this.regionBtn(localStorage.getItem('region')) : ''
         },
         computed: {
             ...mapState('maps',[
@@ -183,12 +251,19 @@
             onMap() {
                 if(!this.selectedRegion) {
                     this.mapImg == ASSET + '/color-map.svg' ? this.mapImg = ASSET + '/plain-map.png' : this.mapImg  = ASSET + '/color-map.svg'
+
                 }
             },
+            offMap() {
+
+            },
             regionBtn(id) {
-                this.$store.dispatch('maps/searchRegion',id)
-                this.mapImg = this.selected.map
-                this.selectedRegion = true
+                if(id) {
+                    this.$store.dispatch('maps/searchRegion',id)
+                    this.mapImg = this.selected.map
+                    localStorage.setItem('region', this.selected.uuid)
+                    this.selectedRegion = true
+                }
             }
         },
 
@@ -229,5 +304,8 @@
 }
 .header-title {
     display: flex;
+}
+.rowMargin {
+    margin-top: 100px !important;
 }
 </style>
