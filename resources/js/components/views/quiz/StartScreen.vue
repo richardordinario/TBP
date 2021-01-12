@@ -15,11 +15,17 @@
                     </v-btn>
                 </router-link>
                 <v-spacer></v-spacer>
-                <p v-if="username" class="white--text ma-5 text-subtitle-1">Score: 0 pts.</p>
+                <p v-if="username" class="white--text ma-5 text-subtitle-1">Score: {{score}} pts.</p>
             </v-app-bar>
             <v-main>
-                <RegisterUser v-if="!username" :region="region" :uuid="region.uuid"/>
-                <QuizPanel v-else :quiz="quiz" :selection="selection" :uuid="region.uuid"/>
+                <div v-if="!ended">
+                    <RegisterUser v-if="!username" :region="region" :uuid="region.uuid"/>
+                    <QuizPanel v-else :quiz="quiz" :selection="selection" :uuid="region.uuid"/>
+                </div>
+                <div v-else>
+                    <Score :score="score"/>
+                </div>
+
             </v-main>
             <v-btn
             bottom
@@ -28,7 +34,7 @@
             v-if="username"
             :style="{left: '50%', transform:'translateX(-50%)', background: 'rgba(0,0,0,0.5)'}"
             class="text-center white--text text-body-2 pa-5"
-            >Drag and drop each attactions to their respective city.
+            > Drag and drop each attactions to their respective city.
             </v-btn>
 
             <router-link to="/map">
@@ -39,12 +45,11 @@
                 right
                 outlined
                 color="white"
-                class="pa-2"
                 style="margin-bottom: 50px;
                 background-color: rgba(0,0,0,0.5)
-                margin-right: 30px"
+                margin-right: 50px"
                 >
-                <img :src="mini_map" alt="map" class="img-fluid p-5">
+                <img :src="mini_map" alt="map" class="img-fluid">
                 </v-btn>
             </router-link>
         </section>
@@ -54,11 +59,13 @@
 <script>
     import RegisterUser from './RegisterUser.vue'
     import QuizPanel from './QuizPanel.vue'
+    import Score from './Score.vue'
 
     export default {
         components: {
             RegisterUser,
-            QuizPanel
+            QuizPanel,
+            Score,
         },
         data() {
             return {
@@ -84,10 +91,16 @@
             selection: function() {
                 this.$store.dispatch('maps/getChoices', this.quiz.quuid)
                 return this.$store.getters['maps/getSelection']
+            },
+            score: function() {
+                return this.$store.getters['maps/getScore']
+            },
+            ended: function() {
+                return this.$store.getters['main/getIsEnded']
             }
         },
         mounted() {
-
+            this.disableRef()
         },
         methods: {
             startQuiz() {
@@ -99,6 +112,14 @@
 
                 }, 2000);
                 console.log(this.username)
+            },
+            disableRef() {
+                // window.onload = function () {
+                //     document.onkeydown = function (e) {
+                //         return (e.which || e.keyCode) != 116;
+                //     };
+                //     document.addEventListener('contextmenu', event => event.preventDefault());
+                // }
             }
         }
     }

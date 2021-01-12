@@ -220,7 +220,6 @@
         },
         methods: {
             ilocusDrop(e) {
-
                 this.dragSet = true
                 this.mapImg = ASSET + '/ilocus-colored-map.png'
                 const passer = e.dataTransfer.getData('marker')

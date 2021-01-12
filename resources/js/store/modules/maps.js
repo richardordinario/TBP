@@ -8,7 +8,9 @@ const state = {
     choices: Choices,
     selected: [],
     selection: [],
-    quiz: []
+    quiz: [],
+    score: 0,
+    answer: false
 }
 const getters = {
     getRegion: state => state.regions,
@@ -17,6 +19,8 @@ const getters = {
     getQuiz: state => state.quiz,
     getChoices: state => state.choices,
     getSelection: state => state.selection,
+    getScore: state => state.score,
+    getAnswer: state => state.answer,
 }
 const actions = {
     searchRegion({commit,getters}, payload) {
@@ -40,6 +44,24 @@ const actions = {
             }
         }
     },
+    checkAnswer({commit, getters}, payload) {
+        var element = []
+        for (let index = 0; index < getters['getQuiz'].questions.length; index++) {
+            if(getters['getQuiz'].questions[index].question === payload.qName) {
+                element = getters['getQuiz'].questions[index]
+            }
+        }
+        for (let i = 0; i < element.answers.length; i++) {
+            if(element.answers[i] == parseInt(payload.cardID)) {
+                const score = getters['getScore'] + element.score
+                commit('SET_SCORE', score)
+                commit('SET_ANSWER', true)
+                break;
+            }else {
+                commit('SET_ANSWER', false)
+            }
+        }
+    }
 
 }
 const mutations = {
@@ -51,6 +73,12 @@ const mutations = {
     ),
     SET_SELECTION: (state, payload) => (
         state.selection = payload
+    ),
+    SET_SCORE: (state, payload) => (
+        state.score = payload
+    ),
+    SET_ANSWER: (state, payload) => (
+        state.answer = payload
     )
 
 }

@@ -44,6 +44,7 @@
         mounted() {
             localStorage.setItem('username', '')
             this.$store.commit('main/SET_USERNAME', '')
+            this.$store.commit('main/SET_END', false)
         },
         methods: {
             getSelected(id) {

@@ -1,11 +1,13 @@
 
 const state = {
     drawer: true,
-    username: null
+    username: null,
+    isEnded: false,
 }
 const getters = {
     getDrawer: state => state.drawer,
-    getUsername: state => state.username
+    getUsername: state => state.username,
+    getIsEnded: state => state.isEnded,
 }
 const actions = {
 
@@ -16,7 +18,11 @@ const mutations = {
     ),
     SET_USERNAME: (state, payload) => (
         state.username = payload
+    ),
+    SET_END: (state, payload) => (
+        state.isEnded = payload
     )
+
 }
 
 export default {

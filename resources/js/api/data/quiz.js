@@ -8,22 +8,26 @@ export const Quizes = [
             {
                 id: 1,
                 question: 'Ilocos Norte',
-                answers: [ 1, 2]
+                answers: [ 1, 2 ],
+                score: 10
             },
             {
                 id: 2,
                 question: 'Ilocos Sur',
-                answers: [ 3, 4]
+                answers: [ 3, 4 ],
+                score: 10
             },
             {
                 id: 3,
                 question: 'La Union',
-                answers: [ 5 ]
+                answers: [ 5 ],
+                score: 10
             },
             {
                 id: 4,
                 question: 'Pangasinan',
-                answers: [ 6 ]
+                answers: [ 6 ],
+                score: 10
             },
         ]
     },
@@ -35,22 +39,26 @@ export const Quizes = [
             {
                 id: 1,
                 question: 'Ilocos Norte',
-                answers: [ 1, 2]
+                answers: [ 1, 2],
+                score: 10
             },
             {
                 id: 2,
                 question: 'Ilocos Sur',
-                answers: [ 3, 4]
+                answers: [ 3, 4],
+                score: 10
             },
             {
                 id: 3,
                 question: 'La Union',
-                answers: [ 5 ]
+                answers: [ 5 ],
+                score: 10
             },
             {
                 id: 4,
                 question: 'Pangasinan',
-                answers: [ 6 ]
+                answers: [ 6 ],
+                score: 10
             },
         ]
     },
