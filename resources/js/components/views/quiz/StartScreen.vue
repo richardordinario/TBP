@@ -5,15 +5,14 @@
             color="transparent"
             elevation="0"
             >
-                <router-link :to="'/region/'+ region.uuid">
-                    <v-btn
+                <v-btn
                     class="white--text"
                     text
+                    @click="backBtn"
                     >
                     <v-icon left>mdi-arrow-left</v-icon>
                     {{region.title}}
                     </v-btn>
-                </router-link>
                 <v-spacer></v-spacer>
                 <p v-if="username" class="white--text ma-5 text-subtitle-1">Score: {{score}} pts.</p>
             </v-app-bar>
@@ -47,12 +46,35 @@
                 color="white"
                 style="margin-bottom: 50px;
                 background-color: rgba(0,0,0,0.5)
-                margin-right: 50px"
+                "
                 >
                 <img :src="mini_map" alt="map" class="img-fluid">
                 </v-btn>
             </router-link>
         </section>
+        <v-dialog
+        v-model="dialog"
+        max-width="290"
+       >
+        <v-card>
+            <v-card-text class="text-center pa-5">
+                <div class="text-h5">Quit Trivia Quiz?</div>
+                <span class="text-subtitle-1">Your progress will not be saved.</span>
+            </v-card-text>
+            <v-card-actions class="justify-center mb-2">
+                <v-btn
+                  @click.stop="dialog = false"
+                  class="mx-2"
+                >
+                    Cancel
+                </v-btn>
+                <router-link :to="'/region/'+ region.uuid">
+                    <v-btn color="red white--text" class="mx-2">Quit</v-btn>            
+                </router-link>
+            </v-card-actions>
+        </v-card>
+
+        </v-dialog>
     </v-app>
 </template>
 
@@ -73,7 +95,8 @@
                 mini_map: ASSET + '/mini-map.png',
                 errMsg: '',
                 frmHasErr: false,
-                isLoading: false
+                isLoading: false,
+                dialog: false
             }
         },
         computed: {
@@ -112,6 +135,13 @@
 
                 }, 2000);
                 console.log(this.username)
+            },
+            backBtn() {
+                if(this.username) {
+                    this.dialog = true
+                }else{
+                    this.$router.push('/region/'+this.region.uuid)
+                }
             },
             disableRef() {
                 // window.onload = function () {

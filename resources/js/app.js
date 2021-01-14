@@ -7,7 +7,8 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-
+import SweetModal from 'sweet-modal-vue/src/plugin.js'
+Vue.use(SweetModal)
 import Vuetify from '../plugins/vuetify';
 import router from './router'
 import store from './store'

@@ -26,6 +26,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "sweet-modal-vue": "^2.0.0",
         "vue-router": "^3.4.9",
         "vuetify": "^2.4.0",
         "vuetify-loader": "^1.5.0",
